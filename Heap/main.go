@@ -11,10 +11,4 @@ func main() {
 	for i := 0; i < len(data); i++ {
 		Heap.Append(data[i])
 	}
-
-	Heap.Showdata()
-
-	Heap.Maxheap()
-	
-	Heap.Showdata()
 }
