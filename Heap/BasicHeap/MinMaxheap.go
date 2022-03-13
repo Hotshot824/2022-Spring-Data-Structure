@@ -51,7 +51,7 @@ func min_son(arr *[Max]int, son int, end int) int {
 
 func parent(i int) int {
 	if i%2 == 0 {
-		return (i / 2) + 1
+		return (i / 2) - 1
 	} else {
 		return i / 2
 	}

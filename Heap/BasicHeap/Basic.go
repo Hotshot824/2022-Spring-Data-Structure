@@ -22,6 +22,16 @@ func (data *Heap) Append(Newdata int) {
 	data.Last_index += 1
 }
 
+func (data *Heap) RmData(RmData int) {
+	for i := 0; i < data.Last_index; i++{
+		if (RmData == data.Array[i]){
+			swap(&data.Array, i, data.Last_index - 1)
+			data.Array[data.Last_index - 1] = 0
+			data.Last_index--
+		}
+	}
+}
+
 func (data *Heap) Showdata() {
 	for i := 0; i < data.Last_index; i++ {
 		fmt.Print(data.Array[i], "\t")
