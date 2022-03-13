@@ -49,30 +49,6 @@ func min_son(arr *[Max]int, son int, end int) int {
 	return result
 }
 
-func pushdonw_min(arr *[Max]int, start int, end int) {
-	dad := start
-	son := dad*2 + 1
-	grandson := son*2 + 1
-	if son <= end {
-		if grandson <= end {
-			grandson := min_grandson(arr, grandson, end)
-			if arr[grandson] < arr[dad] {
-				swap(arr, grandson, dad)
-				son = max_son(arr, son, end)
-				if arr[grandson] > arr[parent(grandson)] {
-					swap(arr, grandson, parent(grandson))
-				}
-				pushdonw_min(arr, grandson, end)
-			}
-		} else {
-			son = min_son(arr, son, end)
-			if arr[son] < arr[dad] {
-				swap(arr, son, dad)
-			}
-		}
-	}
-}
-
 func parent(i int) int {
 	if i%2 == 0 {
 		return (i / 2) + 1
@@ -81,21 +57,45 @@ func parent(i int) int {
 	}
 }
 
+func pushdonw_min(arr *[Max]int, start int, end int) {
+	dad := start
+	son := dad*2 + 1
+	grandson := son*2 + 1
+	if son <= end { //If has son node
+		if grandson <= end { //If has grandson node
+			grandson := min_grandson(arr, grandson, end) //Selection minimum grandson node and compare
+			if arr[grandson] < arr[dad] {
+				swap(arr, grandson, dad)
+				son = max_son(arr, son, end)
+				if arr[grandson] > arr[parent(grandson)] {
+					swap(arr, grandson, parent(grandson))
+				}
+				pushdonw_min(arr, grandson, end) //Recursive by grandson node
+			}
+		} else { //Not exist grandson
+			son = min_son(arr, son, end) 
+			if arr[son] < arr[dad] {
+				swap(arr, son, dad)
+			}
+		}
+	}
+}
+
 func pushdonw_max(arr *[Max]int, start int, end int) {
 	dad := start
 	son := dad*2 + 1
 	grandson := son*2 + 1
-	if son <= end {
-		if grandson <= end {
-			grandson := max_grandson(arr, grandson, end)
+	if son <= end { //If has son node
+		if grandson <= end { //If has grandson node
+			grandson := max_grandson(arr, grandson, end) //Selection minimum grandson node and compare
 			if arr[grandson] > arr[dad] {
 				swap(arr, grandson, dad)
 				if arr[grandson] < arr[parent(grandson)] {
 					swap(arr, grandson, parent(grandson))
 				}
-				pushdonw_max(arr, grandson, end)
+				pushdonw_max(arr, grandson, end) //Recursive by grandson node
 			}
-		} else {
+		} else { //Not exist grandson
 			son = max_son(arr, son, end)
 			if arr[son] > arr[dad] {
 				swap(arr, son, dad)
@@ -105,14 +105,14 @@ func pushdonw_max(arr *[Max]int, start int, end int) {
 }
 
 func (data *Heap) pushdown(index int) {
-	if checklevel(index+1)%2 != 0 { //Min level
+	if checklevel(index+1)%2 != 0 { //if node on min level
 		pushdonw_min(&data.Array, index, data.Last_index-1)
 	} else {
 		pushdonw_max(&data.Array, index, data.Last_index-1)
 	}
 }
 
-func (data *Heap) MinMaxheap() {
+func (data *Heap) MinMaxheap() { //Buttom up
 	for i := data.Last_index/2 - 1; i >= 0; i-- {
 		data.pushdown(i)
 	}
