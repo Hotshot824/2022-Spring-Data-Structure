@@ -7,7 +7,7 @@ import (
 func main() {
 	Heap := BasicHeap.NewHeap()
 
-	data := []int{20, 8, 28, 10, 4, 5, 40, 55}
+	data := []int{27, 7, 80, 5, 67, 18, 62, 24, 58, 25}
 	for i := 0; i < len(data); i++ {
 		Heap.Append(data[i])
 	}
@@ -17,4 +17,5 @@ func main() {
 	Heap.MinMaxheap()
 
 	Heap.Showdata()
+
 }

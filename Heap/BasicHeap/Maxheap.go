@@ -10,7 +10,7 @@ func max_heapify(arr *[Max]int, start int, end int) {
 		if arr[dad] > arr[son] {
 			return
 		} else {
-			arr[dad], arr[son] = arr[son], arr[dad]
+			swap(arr ,dad, son)
 			dad = son
 			son = dad*2 + 1
 		}

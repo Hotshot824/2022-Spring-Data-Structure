@@ -31,3 +31,8 @@ func (data *Heap) Showdata() {
 	}
 	fmt.Print("\n")
 }
+
+func swap(arr *[Max]int, a int, b int){
+	fmt.Printf("swap\t%d\t%d\n", arr[a], arr[b])
+	arr[a], arr[b] = arr[b], arr[a]
+}

@@ -1,7 +1,5 @@
 package BasicHeap
 
-import "fmt"
-
 func checklevel(index int) int {
 	count := 1
 	for index != 1 {
@@ -11,76 +9,106 @@ func checklevel(index int) int {
 	return count
 }
 
-func pushdonw_min(arr *[Max]int, start int, end int) {
-	dad := start
-	son := dad*2 + 1
-	grandson := son * 2
-	for son <= end {
-		if grandson <= end {
-			for grandson+1 < end && arr[grandson] > arr[grandson+1] {
-				grandson++
-			}
-			if arr[grandson] < arr[dad] {
-				arr[grandson], arr[dad] = arr[dad], arr[grandson]
-			}
-			if arr[grandson] > arr[son] {
-				arr[grandson], arr[son] = arr[son], arr[grandson]
-			}
-			pushdonw_min(arr, grandson, end)
-		} else {
-			if son+1 <= end && arr[son] < arr[son+1] {
-				son++
-			}
-			if arr[dad] > arr[son] {
-				return
-			} else {
-				arr[dad], arr[son] = arr[son], arr[dad]
-				dad = son
-				son = dad*2 + 1
+func max_grandson(arr *[Max]int, i int, end int) int {
+	result := i
+	for j := 1; j < 4; j++ {
+		if i+j <= end {
+			if arr[i+j] > arr[result] {
+				result = i + j
 			}
 		}
 	}
-	// fmt.Println("dad = ", dad, "\tson = ", son, "\tgrandson = ", grandson, "\t")
+	return result
+}
+
+func min_grandson(arr *[Max]int, i int, end int) int {
+	result := i
+	for j := 1; j < 4; j++ {
+		if i+j <= end {
+			if arr[i+j] < arr[result] {
+				result = i + j
+			}
+		}
+	}
+	return result
+}
+
+func max_son(arr *[Max]int, son int, end int) int {
+	result := son
+	if son+1 <= end && arr[son+1] > arr[son] {
+		result++
+	}
+	return result
+}
+
+func min_son(arr *[Max]int, son int, end int) int {
+	result := son
+	if son+1 <= end && arr[son+1] < arr[son] {
+		result++
+	}
+	return result
+}
+
+func pushdonw_min(arr *[Max]int, start int, end int) {
+	dad := start
+	son := dad*2 + 1
+	grandson := son*2 + 1
+	if son <= end {
+		if grandson <= end {
+			grandson := min_grandson(arr, grandson, end)
+			if arr[grandson] < arr[dad] {
+				swap(arr, grandson, dad)
+				son = max_son(arr, son, end)
+				if arr[grandson] > arr[parent(grandson)] {
+					swap(arr, grandson, parent(grandson))
+				}
+				pushdonw_min(arr, grandson, end)
+			}
+		} else {
+			son = min_son(arr, son, end)
+			if arr[son] < arr[dad] {
+				swap(arr, son, dad)
+			}
+		}
+	}
+}
+
+func parent(i int) int {
+	if i%2 == 0 {
+		return (i / 2) + 1
+	} else {
+		return i / 2
+	}
 }
 
 func pushdonw_max(arr *[Max]int, start int, end int) {
 	dad := start
 	son := dad*2 + 1
-	grandson := son * 2
-	for son <= end {
+	grandson := son*2 + 1
+	if son <= end {
 		if grandson <= end {
-			for grandson+1 < end && arr[grandson] < arr[grandson + 1] {
-				grandson++
-			}
+			grandson := max_grandson(arr, grandson, end)
 			if arr[grandson] > arr[dad] {
-				arr[grandson], arr[dad] = arr[dad], arr[grandson]
+				swap(arr, grandson, dad)
+				if arr[grandson] < arr[parent(grandson)] {
+					swap(arr, grandson, parent(grandson))
+				}
+				pushdonw_max(arr, grandson, end)
 			}
-			if arr[grandson] < arr[son] {
-				arr[grandson], arr[son] = arr[son], arr[grandson]
-			}
-			pushdonw_min(arr, grandson, end)
 		} else {
-			if son+1 <= end && arr[son] < arr[son+1] {
-				son++
-			}
-			if arr[dad] < arr[son] {
-				return
-			} else {
-				arr[dad], arr[son] = arr[son], arr[dad]
-				dad = son
-				son = dad*2 + 1
+			son = max_son(arr, son, end)
+			if arr[son] > arr[dad] {
+				swap(arr, son, dad)
 			}
 		}
 	}
-	// fmt.Println("dad = ", dad, "\tson = ", son, "\tgrandson = ", grandson, "\t")
 }
 
 func (data *Heap) pushdown(index int) {
 	if checklevel(index+1)%2 != 0 { //Min level
-		fmt.Print("Min level\n")
 		pushdonw_min(&data.Array, index, data.Last_index-1)
 	} else {
-		fmt.Print("Max level\n")
+		pushdonw_max(&data.Array, index, data.Last_index-1)
 	}
 }
 
