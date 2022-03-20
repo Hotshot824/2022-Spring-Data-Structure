@@ -1,8 +1,9 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-struct student {
+struct student
+{
     char name[20];
     int score;
     int bf;
@@ -12,13 +13,16 @@ struct student {
 struct student *ptr, *root, *this_n, *prev, *pivot, *pivot_prev;
 int nodecount = 0;
 
-void flushBuffer(void){
-    while(getchar() != '\n'){
+void flushBuffer(void)
+{
+    while (getchar() != '\n')
+    {
         continue;
     }
 }
 
-void insert_f(void){
+void insert_f(void)
+{
     char name_t[20];
     int score_t;
     printf("\n Please enter name : ");
@@ -31,40 +35,48 @@ void insert_f(void){
     sort_f(name_t, score_t);
 }
 
-void sort_f(char name_t[], int score_t){
+void sort_f(char name_t[], int score_t)
+{
     int op;
     this_n = root;
-    while((this_n != NULL) && (strcmp(name_t, this_n -> name) != 0)){
-        if (strcmp(name_t, this_n -> name) < 0){
+    while ((this_n != NULL) && (strcmp(name_t, this_n->name) != 0))
+    {
+        if (strcmp(name_t, this_n->name) < 0)
+        {
             prev = this_n;
-            this_n = this_n -> llink;
+            this_n = this_n->llink;
         }
-        else{
+        else
+        {
             prev = this_n;
-            this_n = this_n -> rlink;
+            this_n = this_n->rlink;
         }
     }
 
-    if(this_n == NULL || strcmp(name_t, this_n -> name) != 0){
+    if (this_n == NULL || strcmp(name_t, this_n->name) != 0)
+    {
         ptr = (struct student *)malloc(sizeof(struct student));
-        strcpy(ptr -> name, name_t);
-        ptr -> score = score_t;
-        ptr -> llink = NULL;
-        ptr -> rlink = NULL;
+        strcpy(ptr->name, name_t);
+        ptr->score = score_t;
+        ptr->llink = NULL;
+        ptr->rlink = NULL;
         if (root == NULL)
             root = ptr;
-        if (prev != NULL){
-            if(strcmp(ptr -> name, prev -> name) < 0)
-                prev -> llink = ptr;
+        if (prev != NULL)
+        {
+            if (strcmp(ptr->name, prev->name) < 0)
+                prev->llink = ptr;
             else
-                prev -> rlink = ptr;
+                prev->rlink = ptr;
         }
         bf_count(root);
         pivot_find();
 
-        if (pivot != NULL) {
+        if (pivot != NULL)
+        {
             op = type_find();
-            switch (op){
+            switch (op)
+            {
             case 11:
                 type_ll();
                 break;
@@ -76,17 +88,67 @@ void sort_f(char name_t[], int score_t){
                 break;
             case 21:
                 type_rl();
-                break;  
+                break;
             }
         }
         bf_count(root);
     }
-    else {
+    else
+    {
         printf(" %s No exist!\n", name_t);
     }
 }
 
-int main(){
+void delete_f(void)
+{
+    struct student *clear;
+    char name_t[20];
+    int op;
+    if (root == NULL)
+    {
+        printf(" AVL Tree no data!\n");
+    }
+    else
+    {
+        printf("\n Input delete data : ");
+        scanf("%s", name_t);
+        flushBuffer();
+        this_n = root;
+        while (this_n != NULL && strcmp(name_t, this_n->name) != 0)
+        {
+            if(strcmp(name_t, this_n -> name) < 0){
+                prev = this_n;
+                this_n = this_n -> llink;
+            }
+            else{
+                prev = this_n;
+                this_n = this_n -> rlink;
+            }
+        }
+
+        if (this_n != NULL)
+        {
+            //Delete node left & right subtree no exist
+            if(this_n -> llink == NULL && this_n -> rlink == NULL) {
+                clear = this_n;
+                if(strcmp(name_t, root -> name) == 0){
+                    root = NULL;
+                } else{
+                    if(strcmp(name_t, prev -> name) < 0){
+                        prev -> llink = NULL;
+                    }else{
+                        prev -> rlink = NULL;
+                    }
+                }
+                free(clear);
+            }
+        }
+        
+    }
+}
+
+int main()
+{
     char option;
     while (1)
     {
@@ -99,21 +161,22 @@ int main(){
         printf("    Enter choice : \n");
         option = getchar();
         flushBuffer();
-        switch(option) {
-            case '1':
-                insert_f();
-                break;
-            case '2':
-                delete_f();
-                break;
-            case '3':
-                modify_f();
-                break;
-            case '4':
-                list_f();
-                break;
-            case '5':
-                exit(0);
+        switch (option)
+        {
+        case '1':
+            insert_f();
+            break;
+        case '2':
+            delete_f();
+            break;
+        case '3':
+            modify_f();
+            break;
+        case '4':
+            list_f();
+            break;
+        case '5':
+            exit(0);
         }
     }
 
