@@ -116,34 +116,64 @@ void delete_f(void)
         this_n = root;
         while (this_n != NULL && strcmp(name_t, this_n->name) != 0)
         {
-            if(strcmp(name_t, this_n -> name) < 0){
+            if (strcmp(name_t, this_n->name) < 0)
+            {
                 prev = this_n;
-                this_n = this_n -> llink;
+                this_n = this_n->llink;
             }
-            else{
+            else
+            {
                 prev = this_n;
-                this_n = this_n -> rlink;
+                this_n = this_n->rlink;
             }
         }
 
         if (this_n != NULL)
         {
-            //Delete node left & right subtree no exist
-            if(this_n -> llink == NULL && this_n -> rlink == NULL) {
+            // Delete node left & right subtree no exist
+            if (this_n->llink == NULL && this_n->rlink == NULL)
+            {
                 clear = this_n;
-                if(strcmp(name_t, root -> name) == 0){
+                if (strcmp(name_t, root->name) == 0)
+                {
                     root = NULL;
-                } else{
-                    if(strcmp(name_t, prev -> name) < 0){
-                        prev -> llink = NULL;
-                    }else{
-                        prev -> rlink = NULL;
+                }
+                else
+                {
+                    if (strcmp(name_t, prev->name) < 0)
+                    {
+                        prev->llink = NULL;
+                    }
+                    else
+                    {
+                        prev->rlink = NULL;
                     }
                 }
                 free(clear);
             }
+            else
+            {
+                if (this_n->llink != NULL)
+                {
+                    clear = this_n->llink;
+                    while (clear->rlink != NULL)
+                    {
+                        prev = clear;
+                        clear = clear->rlink;
+                    }
+                    strcpy(this_n->name, clear->name);
+                    this_n->score = clear->score;
+                    if (this_n->llink == clear)
+                    {
+                        this_n->llink = clear->llink;
+                    }
+                    else
+                    {
+                        prev->rlink = clear->llink;
+                    }
+                }
+            }
         }
-        
     }
 }
 
