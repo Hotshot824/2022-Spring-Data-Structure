@@ -1,4 +1,4 @@
-package BasicHeap
+package Heap
 
 func checklevel(index int) int {
 	count := 1

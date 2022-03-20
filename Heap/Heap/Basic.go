@@ -1,4 +1,4 @@
-package BasicHeap
+package Heap
 
 import "fmt"
 

@@ -1,18 +1,18 @@
 package main
 
 import (
-	"Heap/BasicHeap"
+	"Heap/Heap"
 	"fmt"
 )
 
-func setData(data []int, Heap *BasicHeap.Heap, len int){
+func setData(data []int, Heap *Heap.Heap, len int){
 	for i := 0; i < len; i++ {
 		Heap.Append(data[i])
 	}
 }
 
 func main() {
-	Heap := BasicHeap.NewHeap()
+	Heap := Heap.NewHeap()
 	data := []int{27, 7, 80, 5, 67, 18, 62, 24, 58, 25}
 	setData(data, &Heap, len(data))
 
@@ -21,7 +21,7 @@ func main() {
 	Heap.Maxheap()
 	Heap.Showdata()
 
-	Heap = BasicHeap.NewHeap()
+	Heap = Heap.NewHeap()
 	data = []int{40, 23, 10, 15, 8}
 	setData(data, &Heap, len(data))
 
@@ -50,7 +50,7 @@ func main() {
 	Heap.Maxheap()
 	Heap.Showdata()
 
-	Heap = BasicHeap.NewHeap()
+	Heap = Heap.NewHeap()
 	data = []int{20, 30, 10, 50, 60, 40, 45, 5, 15, 25}
 	setData(data, &Heap, len(data))
 
@@ -59,7 +59,7 @@ func main() {
 	Heap.Minheap()
 	Heap.Showdata()
 
-	Heap = BasicHeap.NewHeap()
+	Heap = Heap.NewHeap()
 	data = []int{20, 8, 28, 10, 4, 5, 40, 55}
 	setData(data, &Heap, len(data))
 

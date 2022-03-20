@@ -1,4 +1,4 @@
-package BasicHeap
+package Heap
 
 func max_heapify(arr *[Max]int, start int, end int) {
 	dad := start
