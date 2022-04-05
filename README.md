@@ -7,5 +7,6 @@
 - [x] Stack
 - [x] Linkedlist && double Linkdelist
 - [x] Heap && Min-max-heap
+- [ ] `AVL-tree underway`
 - [ ] 2-3-tree
 - [ ] b-tree
